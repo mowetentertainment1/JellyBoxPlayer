@@ -15,15 +15,15 @@ class LoginPage extends ConsumerStatefulWidget {
 
 class LoginPageState extends ConsumerState<LoginPage> {
   String? error;
-  final _serverUrlInputController = TextEditingController();
-  final _emailInputController = TextEditingController();
-  final _passwordInputController = TextEditingController();
+  final _serverUrlInputController = 'https://tv.mowetent.com';
+  final _emailInputController = 'music';
+  final _passwordInputController = 'music';
 
   Future<void> signIn() async {
     final credentials = UserCredentials(
-      username: _emailInputController.text.trim(),
-      pw: _passwordInputController.text.trim(),
-      serverUrl: _serverUrlInputController.text.trim(),
+      username: _emailInputController.trim(),
+      pw: _passwordInputController.trim(),
+      serverUrl: _serverUrlInputController.trim(),
     );
     if (credentials.serverUrl.isEmpty || credentials.username.isEmpty) {
       setState(() {
@@ -75,11 +75,11 @@ class LoginPageState extends ConsumerState<LoginPage> {
                       children: [
                         Image.asset(Images.mainLogo),
                         const SizedBox(height: 63),
-                        _serverURLField(),
+                        // _serverURLField(),
                         const SizedBox(height: 8),
-                        _loginField(),
+                        // _loginField(),
                         const SizedBox(height: 8),
-                        _passwordField(),
+                        // _passwordField(),
                         if (error != null) ...[
                           const SizedBox(height: 8),
                           Text(error!),
@@ -98,27 +98,27 @@ class LoginPageState extends ConsumerState<LoginPage> {
     );
   }
 
-  Widget _serverURLField() => LabeledTextField(
-        label: 'Server URL',
-        keyboardType: TextInputType.url,
-        controller: _serverUrlInputController,
-        textInputAction: TextInputAction.next,
-      );
+  // Widget _serverURLField() => LabeledTextField(
+  //       label: 'Server URL',
+  //       keyboardType: TextInputType.url,
+  //       controller: _serverUrlInputController,
+  //       textInputAction: TextInputAction.next,
+  //     );
 
-  Widget _loginField() => LabeledTextField(
-        label: 'Login',
-        keyboardType: TextInputType.text,
-        controller: _emailInputController,
-        textInputAction: TextInputAction.next,
-      );
+  // Widget _loginField() => LabeledTextField(
+  //       label: 'Login',
+  //       keyboardType: TextInputType.text,
+  //       controller: _emailInputController,
+  //       textInputAction: TextInputAction.next,
+  //     );
 
-  Widget _passwordField() => LabeledTextField(
-        label: 'Password',
-        controller: _passwordInputController,
-        obscureText: true,
-        keyboardType: TextInputType.visiblePassword,
-        textInputAction: TextInputAction.done,
-      );
+  // Widget _passwordField() => LabeledTextField(
+  //       label: 'Password',
+  //       controller: _passwordInputController,
+  //       obscureText: true,
+  //       keyboardType: TextInputType.visiblePassword,
+  //       textInputAction: TextInputAction.done,
+  //     );
 
   Widget _signInButton() => InkWell(
         onTap: signIn,

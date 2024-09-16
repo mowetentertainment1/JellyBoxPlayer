@@ -50,6 +50,7 @@ dependencies:
   dio: ^5.5.0+1
   string_capitalize: ^0.0.10
   sliver_tools: ^0.2.12
+  google_mobile_ads: ^5.1.0
 
 
 dev_dependencies:
