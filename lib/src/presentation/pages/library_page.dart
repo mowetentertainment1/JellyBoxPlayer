@@ -35,7 +35,7 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
         libraries = value
             .where((element) =>
                 element.type == 'CollectionFolder' &&
-                element.collectionType == 'music')
+                element.collectionType == 'music',)
             .toList();
         isLoading = false;
       });
@@ -60,7 +60,7 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
       focusNode: FocusNode(
         onKeyEvent: (node, event) {
           debugPrint(
-              'Focus node ${node.debugLabel} got key event: ${event.logicalKey}');
+              'Focus node ${node.debugLabel} got key event: ${event.logicalKey}',);
           return KeyEventResult.handled;
         },
       ),

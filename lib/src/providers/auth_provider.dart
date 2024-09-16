@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jplayer/main.dart';
-import 'package:jplayer/src/core/exceptions/exceptions.dart';
 import 'package:jplayer/src/data/api/api.dart';
 import 'package:jplayer/src/data/params/params.dart';
 import 'package:jplayer/src/data/providers/providers.dart';
@@ -14,7 +13,7 @@ import 'package:jplayer/src/providers/base_url_provider.dart';
 import 'package:retrofit/retrofit.dart';
 
 final authProvider = StateNotifierProvider<AuthNotifier, AsyncValue<bool?>>((ref) {
-  var notifier = AuthNotifier(dioClient: ref.read(dioProvider), secureStorage: ref.read(secureStorageProvider), ref: ref);
+  final notifier = AuthNotifier(dioClient: ref.read(dioProvider), secureStorage: ref.read(secureStorageProvider), ref: ref);
   notifier.addNoAuthNetworkInterceptor();
   return notifier;
 });
@@ -46,7 +45,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<bool?>> {
         logout();
         return;
       }
-    }));
+    },),);
   }
 
   Future<void> checkAuthState() async {

@@ -11,8 +11,8 @@ class UserData with _$UserData {
   }) = _UserData;
 
   factory UserData.fromJson(Map<String, dynamic> json) {
-    final userJson = json["User"] as Map<String, dynamic>;
-    return UserData(name: userJson['Name'].toString(), id: userJson["UserId"].toString());
+    final userJson = json['User'] as Map<String, dynamic>;
+    return UserData(name: userJson['Name'].toString(), id: userJson['UserId'].toString());
   }
 }
 

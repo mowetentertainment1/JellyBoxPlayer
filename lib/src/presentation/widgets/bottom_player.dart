@@ -161,7 +161,7 @@ class _BottomPlayerState extends ConsumerState<BottomPlayer> with SingleTickerPr
                 enableDrag: false,
                 showDragHandle: true,
                 dragHandleSize: const Size(113, 10),
-                backgroundColor: colorScheme?.background,
+                backgroundColor: colorScheme?.surface,
                 constraints: BoxConstraints(
                   maxHeight: constraints.maxHeight * 0.92,
                   minWidth: constraints.maxWidth,

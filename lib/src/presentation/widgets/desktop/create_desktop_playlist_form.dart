@@ -67,7 +67,7 @@ class _CreatePlaylistBottomSheetState extends ConsumerState<CreateDesktopPlaylis
               const Spacer(),
             ],
           ),
-          Padding(padding: EdgeInsets.only(top: 16)),
+          const Padding(padding: EdgeInsets.only(top: 16)),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

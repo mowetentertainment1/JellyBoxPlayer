@@ -33,7 +33,7 @@ class AudioQueueNotifier extends StateNotifier<AudioQueueState> {
       shuffledSongs: state.shuffledSongs,
       currentSong: nextSong,
       isShuffled: state.isShuffled,
-      album: state.album
+      album: state.album,
     );
   }
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jplayer/src/data/providers/jellyfin_api_provider.dart';
 import 'package:jplayer/src/domain/providers/current_user_provider.dart';
-import 'package:jplayer/src/presentation/widgets/widgets.dart';
 
 class CreatePlaylistForm extends ConsumerStatefulWidget {
   const CreatePlaylistForm({
@@ -63,14 +62,13 @@ class _CreatePlaylistBottomSheetState extends ConsumerState<CreatePlaylistForm> 
               hintText: 'Playlist name',
               hintStyle: TextStyle(
                 fontSize: 16,
-                color: Colors.grey[400]!,
+                color: Colors.grey[400],
               ),
             ),
             autofocus: true,
           ),
           const SizedBox(height: 16),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               StatefulBuilder(
                 builder: (context, setState) => Checkbox(
@@ -83,7 +81,7 @@ class _CreatePlaylistBottomSheetState extends ConsumerState<CreatePlaylistForm> 
               const Text('Is public'),
             ],
           ),
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(top: 72),
           ),
           Row(

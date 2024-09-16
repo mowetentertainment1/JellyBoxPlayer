@@ -61,7 +61,7 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
           clipBehavior: Clip.antiAlias,
           builder: (context) => _availablePlaylistsList(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-              ));
+              ),);
     }
 
     if (playlist != null) {
@@ -235,7 +235,6 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
                             return PlayerSongView(
                               song: song,
                               isPlaying: item != null && song.id == item.id,
-                              downloadProgress: null, // index == 2 ? 0.8 : null,
                               onTap: (song) => ref.read(playbackProvider.notifier).play(song, songs, widget.album),
                               position: index + 1,
                               onLikePressed: (song) async {
@@ -551,7 +550,7 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
                               formKey.currentState!.save();
                             }
                           },
-                          child: const Text("Add to playlist"),
+                          child: const Text('Add to playlist'),
                         ),
                       ],
                     ),

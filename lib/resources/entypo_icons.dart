@@ -17,6 +17,7 @@
 ///         License:   SIL (http://scripts.sil.org/OFL)
 ///         Homepage:  http://www.entypo.com
 ///
+library;
 import 'package:flutter/widgets.dart';
 
 class Entypo {
@@ -25,6 +26,6 @@ class Entypo {
   static const _kFontFam = 'Entypo';
   static const String? _kFontPkg = null;
 
-  static const IconData fast_forward = IconData(0xe812, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData fast_backward = IconData(0xe813, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData fast_forward = IconData(0xe812, fontFamily: _kFontFam);
+  static const IconData fast_backward = IconData(0xe813, fontFamily: _kFontFam);
 }

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jplayer/src/providers/color_scheme_provider.dart';
 
 class GradientBackground extends StatelessWidget {
   const GradientBackground({

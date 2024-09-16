@@ -83,7 +83,7 @@ class CustomNavigationRail extends StatelessWidget {
         foregroundColor: selected ? selectedItemColor : unselectedItemColor,
         backgroundColor: selected ? destinations[index].indicatorColor : null,
         shape: RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(8),
         ),
         splashFactory: NoSplash.splashFactory,
         padding: destinations[index].padding,

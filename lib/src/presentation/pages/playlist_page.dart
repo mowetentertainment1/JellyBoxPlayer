@@ -201,8 +201,6 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                             return PlayerSongView(
                               song: song,
                               isPlaying: item != null && song.id == item.id,
-                              downloadProgress:
-                                  null, // index == 2 ? 0.8 : null,
                               onTap: (song) => ref
                                   .read(playbackProvider.notifier)
                                   .play(song, songs, widget.playlist),
@@ -235,7 +233,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                     } else {
                                       await api.removePlaylistItem(
                                           playlistId: widget.playlist.id,
-                                          entryIds: song.playlistItemId!);
+                                          entryIds: song.playlistItemId!,);
                                       const snackBar = SnackBar(
                                         backgroundColor: Colors.black87,
                                         content: Text(

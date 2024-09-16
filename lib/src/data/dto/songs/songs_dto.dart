@@ -9,9 +9,7 @@ class SongDTO with _$SongDTO {
   const factory SongDTO({
     @JsonKey(name: 'Id') required String id,
     @JsonKey(name: 'RunTimeTicks') required int runTimeTicks,
-    @JsonKey(name: 'IndexNumber') @Default(0) int indexNumber,
-    @JsonKey(name: 'UserData') required SongUserData songUserData,
-    @JsonKey(name: 'Type') required String type,
+    @JsonKey(name: 'UserData') required SongUserData songUserData, @JsonKey(name: 'Type') required String type, @JsonKey(name: 'IndexNumber') @Default(0) int indexNumber,
     @JsonKey(name: 'AlbumArtist') String? albumArtist,
     @JsonKey(name: 'PlaylistItemId') String? playlistItemId,
     @JsonKey(name: 'AlbumArtists') List<ArtistDTO>? albumArtists,
@@ -28,7 +26,7 @@ class SongDTO with _$SongDTO {
 @freezed
 class SongsWrapper with _$SongsWrapper {
   const factory SongsWrapper(
-      {@JsonKey(name: 'Items') required List<SongDTO> items}) = _SongsWrapper;
+      {@JsonKey(name: 'Items') required List<SongDTO> items,}) = _SongsWrapper;
 
   factory SongsWrapper.fromJson(Map<String, dynamic> json) =>
       _$SongsWrapperFromJson(json);

@@ -154,7 +154,7 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                                           widget.artist.name,
                                           style: const TextStyle(
                                               fontSize: 18,
-                                              fontWeight: FontWeight.w700),
+                                              fontWeight: FontWeight.w700,),
                                         ),
                                       ),
                                       _playButton(),
@@ -261,7 +261,7 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                             ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ],
@@ -445,7 +445,7 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                 ),
               ),
             ),
-            ..._albumsWidgets()
+            ..._albumsWidgets(),
           ],
         ),
       );
