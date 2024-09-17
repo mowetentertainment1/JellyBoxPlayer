@@ -62,7 +62,7 @@ class SettingsPage extends ConsumerWidget {
                 spacing: 4,
                 children: [
                   _librariesButton(context),
-                  if (kDebugMode) _settingsButton(context),
+                  // if (kDebugMode) _settingsButton(context),
                   if (!device.isDesktop) _logOutButton(ref),
                 ],
               ),
@@ -74,11 +74,11 @@ class SettingsPage extends ConsumerWidget {
     );
   }
 
-  Widget _settingsButton(BuildContext context) => TextButton.icon(
-        onPressed: () => _onPaletteSettingsPressed(context),
-        icon: const Icon(JPlayer.music),
-        label: const Text('Palette settings'),
-      );
+  // Widget _settingsButton(BuildContext context) => TextButton.icon(
+  //       onPressed: () => _onPaletteSettingsPressed(context),
+  //       icon: const Icon(JPlayer.music),
+  //       label: const Text('Palette settings'),
+  //     );
 
   Widget _librariesButton(BuildContext context) => TextButton.icon(
         onPressed: () => _onLibrariesPressed(context),

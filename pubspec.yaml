@@ -1,7 +1,7 @@
 name: jplayer
 description: Jellyfin client
 publish_to: 'none'
-version: 1.8.4+25
+version: 1.0.0+02
 
 
 environment:
@@ -51,7 +51,6 @@ dependencies:
   string_capitalize: ^0.0.10
   sliver_tools: ^0.2.12
   google_mobile_ads: ^5.1.0
-
 
 dev_dependencies:
   flutter_test:

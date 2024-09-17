@@ -74,7 +74,7 @@ class ScreenFactory {
     BuildContext context,
     GoRouterState router,
   ) {
-    return const CupertinoPage(
+    return CupertinoPage(
       child: LoginPage(),
     );
   }
