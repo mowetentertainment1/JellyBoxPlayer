@@ -65,7 +65,7 @@ class _MainPageState extends ConsumerState<MainPage> {
                   selectedFontSize: 16,
                   unselectedFontSize: 16,
                   leading: const Text(
-                    'JellyBox',
+                    'mPod',
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.w500,

@@ -130,11 +130,11 @@ class LoginPageState extends ConsumerState<LoginPage> {
                         const SizedBox(height: 63),
                         _signInButton(),
                         const SizedBox(height: 63),
-                        // SizedBox(
-                        //   width: _bannerAd.size.width.toDouble(),
-                        //   height: _bannerAd.size.height.toDouble(),
-                        //   child: AdWidget(ad: _bannerAd),
-                        // ),
+                        SizedBox(
+                          width: _bannerAd.size.width.toDouble(),
+                          height: _bannerAd.size.height.toDouble(),
+                          child: AdWidget(ad: _bannerAd),
+                        ),
                       ],
                     ),
 
@@ -224,7 +224,7 @@ class LoginPageState extends ConsumerState<LoginPage> {
           onAdFailedToLoad: (LoadAdError error) {
             debugPrint('InterstitialAd failed to load: $error');
           },
-        ));
+        ),);
   }
 
   Widget _signInButton() => InkWell(

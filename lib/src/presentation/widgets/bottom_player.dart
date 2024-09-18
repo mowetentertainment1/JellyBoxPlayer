@@ -42,141 +42,141 @@ class _BottomPlayerState extends ConsumerState<BottomPlayer> with SingleTickerPr
   late bool _isDesktop;
 
   Future<void> _onExpand(MediaItem? currentSong) => Navigator.of(context, rootNavigator: true).push(
-        ModalSheetRoute(
-          builder: (context) => SafeArea(
-            top: false,
-            minimum: EdgeInsets.only(
-              left: 30,
-              top: _isMobile ? 0 : 20,
-              right: 30,
-              bottom: _isMobile ? 20 : 60,
-            ),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 518),
-              child: ValueListenableBuilder(
-                valueListenable: _dynamicColors,
-                builder: (context, colorScheme, child) => Theme(
-                  data: Theme.of(context).copyWith(colorScheme: colorScheme),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 444),
-                        child: Column(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: AspectRatio(
-                                aspectRatio: 1,
-                                child: ValueListenableBuilder(
-                                  valueListenable: _imageProvider,
-                                  builder: (context, image, child) => (image == null)
-                                      ? const SizedBox.shrink()
-                                      : Image(
-                                          image: currentSong?.artUri != null
-                                              ? NetworkImage(currentSong!.artUri.toString())
-                                              : const AssetImage(Images.album) as ImageProvider,
-                                          fit: BoxFit.cover,
-                                        ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: _isMobile ? 6 : 18),
-                            IconTheme(
-                              data: _theme.iconTheme.copyWith(
-                                size: _isMobile ? 28 : 24,
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  // _openListButton(),
-                                  _randomQueueButton(),
-                                  _repeatTrackButton(),
-                                  // _downloadTrackButton(),
-                                  _likeTrackButton(),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Text(
-                        currentSong?.title ?? '',
-                        style: TextStyle(
-                          fontSize: _isMobile ? 30 : 40,
-                          fontWeight: FontWeight.w600,
-                          height: 1.2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        maxLines: 1,
-                      ),
-                      Text(
-                        currentSong?.artist ?? '',
-                        style: TextStyle(
-                          fontSize: _isMobile ? 18 : 24,
-                          height: 1.2,
-                        ),
-                      ),
-                      // SizedBox(height: _isMobile ? 17 : 0),
-                      // Text(
-                      //   'FLAC 44.1Khz/1080Kbps',
-                      //   style: TextStyle(
-                      //     fontSize: _isMobile ? 14 : 18,
-                      //     color: colorScheme?.onPrimary,
-                      //     height: 1.2,
-                      //   ),
-                      // ),
-
-                      const PositionSlider(),
-                      SizedBox(height: _isMobile ? 23 : 56),
-                      IconTheme(
-                        data: _theme.iconTheme.copyWith(
-                          size: _isMobile ? 37 : 44,
-                        ),
-                        child: Wrap(
-                          spacing: _isMobile ? 40 : 24,
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            _prevTrackButton(),
-                            SizedBox.square(
-                              dimension: _isMobile ? 68 : 72,
-                              child: _playPauseButton(),
-                            ),
-                            _nextTrackButton(),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-          containerBuilder: (context, animation, child) => LayoutBuilder(
-            builder: (context, constraints) => ValueListenableBuilder(
-              valueListenable: _dynamicColors,
-              builder: (context, colorScheme, child) => BottomSheet(
-                animationController: _animationController,
-                onClosing: () {},
-                enableDrag: false,
-                showDragHandle: true,
-                dragHandleSize: const Size(113, 10),
-                backgroundColor: colorScheme?.surface,
-                constraints: BoxConstraints(
-                  maxHeight: constraints.maxHeight * 0.92,
-                  minWidth: constraints.maxWidth,
-                ),
-                builder: (context) => child!,
-              ),
-              child: child,
-            ),
-          ),
-          bounce: true,
-          expanded: false,
-          barrierLabel: _localizations.modalBarrierDismissLabel,
-          duration: const Duration(milliseconds: 300),
+    ModalSheetRoute(
+      builder: (context) => SafeArea(
+        top: false,
+        minimum: EdgeInsets.only(
+          left: 30,
+          top: _isMobile ? 0 : 20,
+          right: 30,
+          bottom: _isMobile ? 20 : 60,
         ),
-      );
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 518),
+          child: ValueListenableBuilder(
+            valueListenable: _dynamicColors,
+            builder: (context, colorScheme, child) => Theme(
+              data: Theme.of(context).copyWith(colorScheme: colorScheme),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 444),
+                    child: Column(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: AspectRatio(
+                            aspectRatio: 1,
+                            child: ValueListenableBuilder(
+                              valueListenable: _imageProvider,
+                              builder: (context, image, child) => (image == null)
+                                  ? const SizedBox.shrink()
+                                  : Image(
+                                image: currentSong?.artUri != null
+                                    ? NetworkImage(currentSong!.artUri.toString())
+                                    : const AssetImage(Images.album) as ImageProvider,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: _isMobile ? 6 : 18),
+                        IconTheme(
+                          data: _theme.iconTheme.copyWith(
+                            size: _isMobile ? 28 : 24,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              // _openListButton(),
+                              _randomQueueButton(),
+                              _repeatTrackButton(),
+                              // _downloadTrackButton(),
+                              _likeTrackButton(),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Text(
+                    currentSong?.title ?? '',
+                    style: TextStyle(
+                      fontSize: _isMobile ? 30 : 40,
+                      fontWeight: FontWeight.w600,
+                      height: 1.2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    maxLines: 1,
+                  ),
+                  Text(
+                    currentSong?.artist ?? '',
+                    style: TextStyle(
+                      fontSize: _isMobile ? 18 : 24,
+                      height: 1.2,
+                    ),
+                  ),
+                  // SizedBox(height: _isMobile ? 17 : 0),
+                  // Text(
+                  //   'FLAC 44.1Khz/1080Kbps',
+                  //   style: TextStyle(
+                  //     fontSize: _isMobile ? 14 : 18,
+                  //     color: colorScheme?.onPrimary,
+                  //     height: 1.2,
+                  //   ),
+                  // ),
+
+                  const PositionSlider(),
+                  SizedBox(height: _isMobile ? 23 : 56),
+                  IconTheme(
+                    data: _theme.iconTheme.copyWith(
+                      size: _isMobile ? 37 : 44,
+                    ),
+                    child: Wrap(
+                      spacing: _isMobile ? 40 : 24,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        _prevTrackButton(),
+                        SizedBox.square(
+                          dimension: _isMobile ? 68 : 72,
+                          child: _playPauseButton(),
+                        ),
+                        _nextTrackButton(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+      containerBuilder: (context, animation, child) => LayoutBuilder(
+        builder: (context, constraints) => ValueListenableBuilder(
+          valueListenable: _dynamicColors,
+          builder: (context, colorScheme, child) => BottomSheet(
+            animationController: _animationController,
+            onClosing: () {},
+            enableDrag: false,
+            showDragHandle: true,
+            dragHandleSize: const Size(113, 10),
+            backgroundColor: colorScheme?.background,
+            constraints: BoxConstraints(
+              maxHeight: constraints.maxHeight * 0.92,
+              minWidth: constraints.maxWidth,
+            ),
+            builder: (context) => child!,
+          ),
+          child: child,
+        ),
+      ),
+      bounce: true,
+      expanded: false,
+      barrierLabel: _localizations.modalBarrierDismissLabel,
+      duration: const Duration(milliseconds: 300),
+    ),
+  );
 
   Future<void> _onImageProviderChanged() async {
     final imageProvider = _imageProvider.value;
@@ -195,7 +195,7 @@ class _BottomPlayerState extends ConsumerState<BottomPlayer> with SingleTickerPr
     _animationController = BottomSheet.createAnimationController(this);
     _imageProvider.addListener(_onImageProviderChanged);
     WidgetsBinding.instance.addPostFrameCallback(
-      (_) => _imageProvider.value = const AssetImage(Images.songSample),
+          (_) => _imageProvider.value = const AssetImage(Images.songSample),
     );
   }
 
@@ -305,85 +305,85 @@ class _BottomPlayerState extends ConsumerState<BottomPlayer> with SingleTickerPr
   }
 
   Widget _playPauseButton() => PlayPauseButton(
-        onPressed: () => _isPlaying.value ? ref.read(playbackProvider.notifier).pause() : ref.read(playbackProvider.notifier).resume(),
-        background: _theme.colorScheme.onPrimary,
-        foreground: _theme.scaffoldBackgroundColor,
-        stateNotifier: _isPlaying,
-      );
+    onPressed: () => _isPlaying.value ? ref.read(playbackProvider.notifier).pause() : ref.read(playbackProvider.notifier).resume(),
+    background: _theme.colorScheme.onPrimary,
+    foreground: _theme.scaffoldBackgroundColor,
+    stateNotifier: _isPlaying,
+  );
 
   Widget _prevTrackButton() => IconButton(
-        onPressed: () => ref.read(playbackProvider.notifier).prev(),
-        color: _theme.colorScheme.onPrimary,
-        icon: const Icon(Entypo.fast_backward),
-      );
+    onPressed: () => ref.read(playbackProvider.notifier).prev(),
+    color: _theme.colorScheme.onPrimary,
+    icon: const Icon(Entypo.fast_backward),
+  );
 
   Widget _nextTrackButton() => IconButton(
-        onPressed: () => ref.read(playbackProvider.notifier).next(),
-        color: _theme.colorScheme.onPrimary,
-        icon: const Icon(Entypo.fast_forward),
-      );
+    onPressed: () => ref.read(playbackProvider.notifier).next(),
+    color: _theme.colorScheme.onPrimary,
+    icon: const Icon(Entypo.fast_forward),
+  );
 
   Widget _openListButton() => IconButton(
-        onPressed: () {},
-        color: _theme.colorScheme.onPrimary,
-        icon: const Icon(CupertinoIcons.list_bullet),
-      );
+    onPressed: () {},
+    color: _theme.colorScheme.onPrimary,
+    icon: const Icon(CupertinoIcons.list_bullet),
+  );
 
   Widget _randomQueueButton() => StreamBuilder<bool?>(
-        stream: ref.read(playerProvider).shuffleModeEnabledStream,
-        builder: (context, snapshot) {
-          return IconButton(
-            onPressed: () => ref.read(playerProvider).setShuffleModeEnabled(snapshot.data == null ? !snapshot.data! : true),
-            icon: Icon(
-              JPlayer.mix,
-              color: _theme.colorScheme.onPrimary,
-            ),
-            selectedIcon: Icon(
-              JPlayer.mix,
-              color: _theme.colorScheme.primary,
-            ),
-            isSelected: snapshot.data ?? false,
-          );
-        },
+    stream: ref.read(playerProvider).shuffleModeEnabledStream,
+    builder: (context, snapshot) {
+      return IconButton(
+        onPressed: () => ref.read(playerProvider).setShuffleModeEnabled(snapshot.data == null ? !snapshot.data! : true),
+        icon: Icon(
+          JPlayer.mix,
+          color: _theme.colorScheme.onPrimary,
+        ),
+        selectedIcon: Icon(
+          JPlayer.mix,
+          color: _theme.colorScheme.primary,
+        ),
+        isSelected: snapshot.data ?? false,
       );
+    },
+  );
 
   Widget _repeatTrackButton() => StreamBuilder<LoopMode>(
-        stream: ref.read(playerProvider).loopModeStream,
-        builder: (context, snapshot) {
-          return IconButton(
-            onPressed: () => ref.read(playerProvider).setLoopMode(snapshot.data == LoopMode.all ? LoopMode.off : LoopMode.all),
-            icon: Icon(
-              JPlayer.repeat,
-              color: _theme.colorScheme.onPrimary,
-            ),
-            selectedIcon: Icon(
-              JPlayer.repeat,
-              color: _theme.colorScheme.primary,
-            ),
-            isSelected: snapshot.data == LoopMode.all,
-          );
-        },
+    stream: ref.read(playerProvider).loopModeStream,
+    builder: (context, snapshot) {
+      return IconButton(
+        onPressed: () => ref.read(playerProvider).setLoopMode(snapshot.data == LoopMode.all ? LoopMode.off : LoopMode.all),
+        icon: Icon(
+          JPlayer.repeat,
+          color: _theme.colorScheme.onPrimary,
+        ),
+        selectedIcon: Icon(
+          JPlayer.repeat,
+          color: _theme.colorScheme.primary,
+        ),
+        isSelected: snapshot.data == LoopMode.all,
       );
+    },
+  );
 
   Widget _downloadTrackButton() => IconButton(
-        onPressed: () {},
-        color: _theme.colorScheme.onPrimary,
-        icon: const Icon(JPlayer.download),
-      );
+    onPressed: () {},
+    color: _theme.colorScheme.onPrimary,
+    icon: const Icon(JPlayer.download),
+  );
 
   Widget _likeTrackButton() => ValueListenableBuilder(
-        valueListenable: _likeTrack,
-        builder: (context, isLiked, child) => IconButton(
-          onPressed: () => _likeTrack.value = !isLiked,
-          icon: Icon(
-            CupertinoIcons.heart,
-            color: _theme.colorScheme.onPrimary,
-          ),
-          selectedIcon: Icon(
-            CupertinoIcons.heart_fill,
-            color: _theme.colorScheme.primary,
-          ),
-          isSelected: isLiked,
-        ),
-      );
+    valueListenable: _likeTrack,
+    builder: (context, isLiked, child) => IconButton(
+      onPressed: () => _likeTrack.value = !isLiked,
+      icon: Icon(
+        CupertinoIcons.heart,
+        color: _theme.colorScheme.onPrimary,
+      ),
+      selectedIcon: Icon(
+        CupertinoIcons.heart_fill,
+        color: _theme.colorScheme.primary,
+      ),
+      isSelected: isLiked,
+    ),
+  );
 }

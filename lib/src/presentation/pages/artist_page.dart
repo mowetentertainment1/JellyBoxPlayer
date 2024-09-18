@@ -37,7 +37,7 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
       final scrollPosition = _scrollController.position;
       final scrollableContext = scrollPosition.context.notificationContext!;
       final scrollableRenderBox =
-          scrollableContext.findRenderObject()! as RenderBox;
+      scrollableContext.findRenderObject()! as RenderBox;
       final titleRenderBox = titleContext!.findRenderObject()! as RenderBox;
       final titlePosition = titleRenderBox.localToGlobal(
         Offset.zero,
@@ -59,10 +59,10 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
 
   Future<void> _getAppearsOn() async {
     final resp = await ref.read(jellyfinApiProvider).getAlbums(
-          userId: ref.read(currentUserProvider)!.userId,
-          libraryId: '',
-          contributingArtistIds: widget.artist.id,
-        );
+      userId: ref.read(currentUserProvider)!.userId,
+      libraryId: '',
+      contributingArtistIds: widget.artist.id,
+    );
     setState(() {
       _appearsOn = resp.data.items;
     });
@@ -146,7 +146,7 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                                 children: [
                                   Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
                                       Expanded(
                                         child: Text(
@@ -154,7 +154,7 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                                           widget.artist.name,
                                           style: const TextStyle(
                                               fontSize: 18,
-                                              fontWeight: FontWeight.w700,),
+                                              fontWeight: FontWeight.w700),
                                         ),
                                       ),
                                       _playButton(),
@@ -233,7 +233,7 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                               children: [
                                 Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       widget.artist.name,
@@ -261,7 +261,7 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                             ),
                           ),
                         ),
-                      ),
+                      )
                     ],
                   ),
                 ],
@@ -280,54 +280,54 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
   }
 
   Widget _headerImage() => Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: ref.read(imageProvider).backdropIp(
-                  tagId: widget.artist.backgropImageTags.firstOrNull,
-                  id: widget.artist.id,
-                ),
-            fit: BoxFit.fitWidth,
-          ),
+    decoration: BoxDecoration(
+      image: DecorationImage(
+        image: ref.read(imageProvider).backdropIp(
+          tagId: widget.artist.backgropImageTags.firstOrNull,
+          id: widget.artist.id,
         ),
-        foregroundDecoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              _theme.scaffoldBackgroundColor.withOpacity(0),
-              _theme.scaffoldBackgroundColor.withOpacity(1),
-            ],
-          ),
-        ),
-      );
+        fit: BoxFit.fitWidth,
+      ),
+    ),
+    foregroundDecoration: BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          _theme.scaffoldBackgroundColor.withOpacity(0),
+          _theme.scaffoldBackgroundColor.withOpacity(1),
+        ],
+      ),
+    ),
+  );
 
   Widget _mainImage() => Image(
-        image: ref.read(imageProvider).albumIP(
-              tagId: widget.artist.imageTags['Primary'],
-              id: widget.artist.id,
-            ),
-        width: 500,
-      );
+    image: ref.read(imageProvider).albumIP(
+      tagId: widget.artist.imageTags['Primary'],
+      id: widget.artist.id,
+    ),
+    width: 500,
+  );
 
   Widget _infoText() => Padding(
-        padding: const EdgeInsets.only(top: 20),
-        child: Text(
-          widget.artist.overview ??
-              'This artist does not have any information.',
-          maxLines: 5,
-          overflow: TextOverflow.ellipsis,
-          softWrap: true,
-          style: _theme.textTheme.bodySmall?.copyWith(
-            fontSize: 14,
-            height: 1.2,
-          ),
-        ),
-      );
+    padding: const EdgeInsets.only(top: 20),
+    child: Text(
+      widget.artist.overview ??
+          'This artist does not have any information.',
+      maxLines: 5,
+      overflow: TextOverflow.ellipsis,
+      softWrap: true,
+      style: _theme.textTheme.bodySmall?.copyWith(
+        fontSize: 14,
+        height: 1.2,
+      ),
+    ),
+  );
 
   Widget _playButton() => SizedBox(
-        height: 48,
-        child: PlayButton(onPressed: () {}),
-      );
+    height: 48,
+    child: PlayButton(onPressed: () {}),
+  );
 
   List<Widget> _albumsWidgets() {
     return [
@@ -424,29 +424,29 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
   }
 
   Widget _albumsList() => CustomScrollbar(
-        controller: _scrollController,
-        child: CustomScrollView(
-          controller: _scrollController,
-          slivers: [
-            SliverPinnedHeader(
-              child: SizedBox.fromSize(
-                size: const Size.fromHeight(16),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        _theme.scaffoldBackgroundColor.withOpacity(1),
-                        _theme.scaffoldBackgroundColor.withOpacity(0),
-                      ],
-                    ),
-                  ),
+    controller: _scrollController,
+    child: CustomScrollView(
+      controller: _scrollController,
+      slivers: [
+        SliverPinnedHeader(
+          child: SizedBox.fromSize(
+            size: const Size.fromHeight(16),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    _theme.scaffoldBackgroundColor.withOpacity(1),
+                    _theme.scaffoldBackgroundColor.withOpacity(0),
+                  ],
                 ),
               ),
             ),
-            ..._albumsWidgets(),
-          ],
+          ),
         ),
-      );
+        ..._albumsWidgets()
+      ],
+    ),
+  );
 }

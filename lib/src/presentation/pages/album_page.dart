@@ -60,16 +60,16 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
           useRootNavigator: true,
           clipBehavior: Clip.antiAlias,
           builder: (context) => _availablePlaylistsList(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-              ),);
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+          ));
     }
 
     if (playlist != null) {
       await ref.read(jellyfinApiProvider).addPlaylistItems(
-            playlistId: playlist.id,
-            userId: ref.read(currentUserProvider)!.userId,
-            entryIds: song.id,
-          );
+        playlistId: playlist.id,
+        userId: ref.read(currentUserProvider)!.userId,
+        entryIds: song.id,
+      );
       const snackBar = SnackBar(
         backgroundColor: Colors.black87,
         content: Text(
@@ -125,9 +125,9 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
     ref
         .read(jellyfinApiProvider)
         .getSongs(
-          userId: ref.read(currentUserProvider)!.userId,
-          albumId: widget.album.id,
-        )
+      userId: ref.read(currentUserProvider)!.userId,
+      albumId: widget.album.id,
+    )
         .then((value) {
       setState(() {
         final items = [...value.data.items]..sort((a, b) => a.indexNumber.compareTo(b.indexNumber));
@@ -235,6 +235,7 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
                             return PlayerSongView(
                               song: song,
                               isPlaying: item != null && song.id == item.id,
+                              downloadProgress: null, // index == 2 ? 0.8 : null,
                               onTap: (song) => ref.read(playbackProvider.notifier).play(song, songs, widget.album),
                               position: index + 1,
                               onLikePressed: (song) async {
@@ -277,151 +278,151 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
   }
 
   Widget _albumPanelMobile() => IconTheme(
-        data: _theme.iconTheme.copyWith(size: _device.isMobile ? 24 : 28),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    data: _theme.iconTheme.copyWith(size: _device.isMobile ? 24 : 28),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Flexible(
+              child: Text(
+                widget.album.name,
+                key: _titleKey,
+                style: TextStyle(
+                  fontSize: _device.isMobile ? 18 : 32,
+                  fontWeight: FontWeight.w600,
+                  height: 1.2,
+                ),
+              ),
+            ),
+          ],
+        ),
+        Text(widget.album.albumArtist ?? ''),
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                Flexible(
-                  child: Text(
-                    widget.album.name,
-                    key: _titleKey,
-                    style: TextStyle(
-                      fontSize: _device.isMobile ? 18 : 32,
-                      fontWeight: FontWeight.w600,
-                      height: 1.2,
-                    ),
-                  ),
+            _albumDetails(
+              duration: widget.album.duration,
+              soundsCount: songs.length,
+              albumArtist: songs.isNotEmpty ? songs.first.albumArtist : '',
+              year: widget.album.productionYear,
+              divider: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Offstage(
+                  offstage: _device.isMobile,
+                  child: const Icon(Icons.circle, size: 4),
                 ),
-              ],
+              ),
             ),
-            Text(widget.album.albumArtist ?? ''),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                _albumDetails(
-                  duration: widget.album.duration,
-                  soundsCount: songs.length,
-                  albumArtist: songs.isNotEmpty ? songs.first.albumArtist : '',
-                  year: widget.album.productionYear,
-                  divider: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Offstage(
-                      offstage: _device.isMobile,
-                      child: const Icon(Icons.circle, size: 4),
-                    ),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    // _downloadAlbumButton(),
-                    const RandomQueueButton(),
-                    SizedBox.square(
-                      dimension: _device.isMobile ? 38 : 48,
-                      child: _playAlbumButton(),
-                    ),
-                  ],
+                // _downloadAlbumButton(),
+                const RandomQueueButton(),
+                SizedBox.square(
+                  dimension: _device.isMobile ? 38 : 48,
+                  child: _playAlbumButton(),
                 ),
               ],
             ),
           ],
         ),
-      );
+      ],
+    ),
+  );
 
   Widget _albumPanel() => IconTheme(
-        data: _theme.iconTheme.copyWith(size: _device.isMobile ? 24 : 28),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
+    data: _theme.iconTheme.copyWith(size: _device.isMobile ? 24 : 28),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
-                  Row(
-                    children: [
-                      Flexible(
-                        child: Text(
-                          widget.album.name,
-                          key: _titleKey,
-                          style: TextStyle(
-                            fontSize: _device.isMobile ? 18 : 32,
-                            fontWeight: FontWeight.w600,
-                            height: 1.2,
-                          ),
-                        ),
+                  Flexible(
+                    child: Text(
+                      widget.album.name,
+                      key: _titleKey,
+                      style: TextStyle(
+                        fontSize: _device.isMobile ? 18 : 32,
+                        fontWeight: FontWeight.w600,
+                        height: 1.2,
                       ),
-                    ],
-                  ),
-                  Text(widget.album.albumArtist ?? ''),
-                  Row(
-                    children: [
-                      _albumDetails(
-                        duration: widget.album.duration,
-                        soundsCount: songs.length,
-                        albumArtist: songs.isNotEmpty ? songs.first.albumArtist : '',
-                        year: widget.album.productionYear,
-                        divider: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Offstage(
-                            offstage: _device.isMobile,
-                            child: const Icon(Icons.circle, size: 4),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ],
               ),
-            ),
-            SizedBox(width: _device.isDesktop ? 35 : 32),
-            if (_device.isDesktop)
-              Container()
-            // StreamBuilder<PlayerState>(
-            //   stream: ref.read(playerProvider).playerStateStream,
-            //   builder: (context, snapshot) {
-            //     return Expanded(
-            //       child: Row(
-            //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //         children: [
-            //           SizedBox.square(
-            //             dimension: 65,
-            //             child: _playAlbumButton(),
-            //           ),
-            //           _downloadAlbumButton(),
-            //         ],
-            //       ),
-            //     );
-            //   },
-            // )
-            else
-              Wrap(
-                spacing: _device.isMobile ? 6 : 32,
-                crossAxisAlignment: WrapCrossAlignment.center,
+              Text(widget.album.albumArtist ?? ''),
+              Row(
                 children: [
-                  _downloadAlbumButton(),
-                  const RandomQueueButton(),
-                  SizedBox.square(
-                    dimension: _device.isMobile ? 40 : 48,
-                    child: _playAlbumButton(),
+                  _albumDetails(
+                    duration: widget.album.duration,
+                    soundsCount: songs.length,
+                    albumArtist: songs.isNotEmpty ? songs.first.albumArtist : '',
+                    year: widget.album.productionYear,
+                    divider: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Offstage(
+                        offstage: _device.isMobile,
+                        child: const Icon(Icons.circle, size: 4),
+                      ),
+                    ),
                   ),
                 ],
               ),
-          ],
+            ],
+          ),
         ),
-      );
+        SizedBox(width: _device.isDesktop ? 35 : 32),
+        if (_device.isDesktop)
+          Container()
+        // StreamBuilder<PlayerState>(
+        //   stream: ref.read(playerProvider).playerStateStream,
+        //   builder: (context, snapshot) {
+        //     return Expanded(
+        //       child: Row(
+        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //         children: [
+        //           SizedBox.square(
+        //             dimension: 65,
+        //             child: _playAlbumButton(),
+        //           ),
+        //           _downloadAlbumButton(),
+        //         ],
+        //       ),
+        //     );
+        //   },
+        // )
+        else
+          Wrap(
+            spacing: _device.isMobile ? 6 : 32,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              _downloadAlbumButton(),
+              const RandomQueueButton(),
+              SizedBox.square(
+                dimension: _device.isMobile ? 40 : 48,
+                child: _playAlbumButton(),
+              ),
+            ],
+          ),
+      ],
+    ),
+  );
 
   Widget _playAlbumButton() => PlayButton(
-        onPressed: () {},
-      );
+    onPressed: () {},
+  );
 
   Widget _downloadAlbumButton() => IconButton(
-        onPressed: () {},
-        icon: const Icon(JPlayer.download),
-      );
+    onPressed: () {},
+    icon: const Icon(JPlayer.download),
+  );
 
   Widget _albumDetails({
     required Duration duration,
@@ -526,7 +527,7 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
                       ),
                       onChanged: (ItemDTO? item) {},
                       items: data.value.items.map<DropdownMenuItem<ItemDTO>>(
-                        (ItemDTO item) {
+                            (ItemDTO item) {
                           return DropdownMenuItem<ItemDTO>(value: item, child: Text(item.name));
                         },
                       ).toList(),
@@ -550,7 +551,7 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
                               formKey.currentState!.save();
                             }
                           },
-                          child: const Text('Add to playlist'),
+                          child: const Text("Add to playlist"),
                         ),
                       ],
                     ),
@@ -601,10 +602,10 @@ class _FadeOutImageDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(
-    BuildContext context,
-    double shrinkOffset,
-    bool overlapsContent,
-  ) {
+      BuildContext context,
+      double shrinkOffset,
+      bool overlapsContent,
+      ) {
     return Image(
       image: image,
       height: max(maxExtent - shrinkOffset, 0),
