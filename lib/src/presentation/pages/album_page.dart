@@ -319,11 +319,11 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 // _downloadAlbumButton(),
-                const RandomQueueButton(),
-                SizedBox.square(
-                  dimension: _device.isMobile ? 38 : 48,
-                  child: _playAlbumButton(),
-                ),
+                // const RandomQueueButton(),
+                // SizedBox.square(
+                //   dimension: _device.isMobile ? 38 : 48,
+                //   child: _playAlbumButton(),
+                // ),
               ],
             ),
           ],
@@ -405,19 +405,19 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
             children: [
               _downloadAlbumButton(),
               const RandomQueueButton(),
-              SizedBox.square(
-                dimension: _device.isMobile ? 40 : 48,
-                child: _playAlbumButton(),
-              ),
+              // SizedBox.square(
+              //   dimension: _device.isMobile ? 40 : 48,
+              //   child: _playAlbumButton(),
+              // ),
             ],
           ),
       ],
     ),
   );
 
-  Widget _playAlbumButton() => PlayButton(
-    onPressed: () {},
-  );
+  // Widget _playAlbumButton() => PlayButton(
+  //   onPressed: () {},
+  // );
 
   Widget _downloadAlbumButton() => IconButton(
     onPressed: () {},

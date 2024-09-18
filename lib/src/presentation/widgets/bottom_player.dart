@@ -90,10 +90,10 @@ class _BottomPlayerState extends ConsumerState<BottomPlayer> with SingleTickerPr
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               // _openListButton(),
-                              _randomQueueButton(),
-                              _repeatTrackButton(),
+                              // _randomQueueButton(),
+                              // _repeatTrackButton(),
                               // _downloadTrackButton(),
-                              _likeTrackButton(),
+                              // _likeTrackButton(),
                             ],
                           ),
                         ),
@@ -371,19 +371,19 @@ class _BottomPlayerState extends ConsumerState<BottomPlayer> with SingleTickerPr
     icon: const Icon(JPlayer.download),
   );
 
-  Widget _likeTrackButton() => ValueListenableBuilder(
-    valueListenable: _likeTrack,
-    builder: (context, isLiked, child) => IconButton(
-      onPressed: () => _likeTrack.value = !isLiked,
-      icon: Icon(
-        CupertinoIcons.heart,
-        color: _theme.colorScheme.onPrimary,
-      ),
-      selectedIcon: Icon(
-        CupertinoIcons.heart_fill,
-        color: _theme.colorScheme.primary,
-      ),
-      isSelected: isLiked,
-    ),
-  );
+  // Widget _likeTrackButton() => ValueListenableBuilder(
+  //   valueListenable: _likeTrack,
+  //   builder: (context, isLiked, child) => IconButton(
+  //     onPressed: () => _likeTrack.value = !isLiked,
+  //     icon: Icon(
+  //       CupertinoIcons.heart,
+  //       color: _theme.colorScheme.onPrimary,
+  //     ),
+  //     selectedIcon: Icon(
+  //       CupertinoIcons.heart_fill,
+  //       color: _theme.colorScheme.primary,
+  //     ),
+  //     isSelected: isLiked,
+  //   ),
+  // );
 }

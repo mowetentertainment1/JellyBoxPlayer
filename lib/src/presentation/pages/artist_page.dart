@@ -157,7 +157,7 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                                               fontWeight: FontWeight.w700),
                                         ),
                                       ),
-                                      _playButton(),
+                                      // _playButton(),
                                     ],
                                   ),
                                   DefaultTextStyle(
@@ -242,7 +242,7 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
-                                    _playButton(),
+                                    // _playButton(),
                                   ],
                                 ),
                                 DefaultTextStyle(
@@ -324,10 +324,10 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
     ),
   );
 
-  Widget _playButton() => SizedBox(
-    height: 48,
-    child: PlayButton(onPressed: () {}),
-  );
+  // Widget _playButton() => SizedBox(
+  //   height: 48,
+  //   child: PlayButton(onPressed: () {}),
+  // );
 
   List<Widget> _albumsWidgets() {
     return [

@@ -63,7 +63,7 @@ class SettingsPage extends ConsumerWidget {
                 children: [
                   _librariesButton(context),
                   // if (kDebugMode) _settingsButton(context),
-                  if (!device.isDesktop) _logOutButton(ref),
+                  // if (!device.isDesktop) _logOutButton(ref),
                 ],
               ),
             ),
@@ -86,9 +86,9 @@ class SettingsPage extends ConsumerWidget {
         label: const Text('Music libraries'),
       );
 
-  Widget _logOutButton(WidgetRef ref) => TextButton.icon(
-        onPressed: ref.read(authProvider.notifier).logout,
-        icon: const Icon(JPlayer.log_out),
-        label: const Text('Log out'),
-      );
+  // Widget _logOutButton(WidgetRef ref) => TextButton.icon(
+  //       onPressed: ref.read(authProvider.notifier).logout,
+  //       icon: const Icon(JPlayer.log_out),
+  //       label: const Text('Log out'),
+  //     );
 }

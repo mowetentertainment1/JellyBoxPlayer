@@ -370,10 +370,10 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 // _downloadAlbumButton(),
-                const RandomQueueButton(),
+                // const RandomQueueButton(),
                 SizedBox.square(
                   dimension: _device.isMobile ? 38 : 48,
-                  child: _playAlbumButton(),
+                  // child: _playAlbumButton(),
                 ),
               ],
             ),
@@ -459,7 +459,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
               const RandomQueueButton(),
               SizedBox.square(
                 dimension: _device.isMobile ? 40 : 48,
-                child: _playAlbumButton(),
+                // child: _playAlbumButton(),
               ),
             ],
           ),

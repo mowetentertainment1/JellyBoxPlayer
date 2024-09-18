@@ -78,10 +78,10 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                 _titleText(),
                 const Spacer(),
                 _searchButton(),
-                TextButton(
-                  onPressed: ref.read(authProvider.notifier).logout,
-                  child: const Text('Logout'),
-                ),
+                // TextButton(
+                //   onPressed: ref.read(authProvider.notifier).logout,
+                //   child: const Text('Logout'),
+                // ),
               ],
             ),
           ),
