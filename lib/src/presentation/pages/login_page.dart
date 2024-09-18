@@ -86,6 +86,7 @@ class LoginPageState extends ConsumerState<LoginPage> {
     _loadAd();
     loadAd();
     _interstitialAd?.show();
+    signIn();
 
   }
 
@@ -129,12 +130,12 @@ class LoginPageState extends ConsumerState<LoginPage> {
                         ],
                         const SizedBox(height: 63),
                         _signInButton(),
-                        const SizedBox(height: 63),
-                        SizedBox(
-                          width: _bannerAd.size.width.toDouble(),
-                          height: _bannerAd.size.height.toDouble(),
-                          child: AdWidget(ad: _bannerAd),
-                        ),
+                        // const SizedBox(height: 63),
+                        // SizedBox(
+                        //   width: _bannerAd.size.width.toDouble(),
+                        //   height: _bannerAd.size.height.toDouble(),
+                        //   child: AdWidget(ad: _bannerAd),
+                        // ),
                       ],
                     ),
 
