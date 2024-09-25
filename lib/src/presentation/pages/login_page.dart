@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:jplayer/resources/resources.dart';
 import 'package:jplayer/src/data/params/params.dart';
-import 'package:jplayer/src/presentation/widgets/widgets.dart';
 import 'package:jplayer/src/providers/auth_provider.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
@@ -130,12 +129,12 @@ class LoginPageState extends ConsumerState<LoginPage> {
                         ],
                         const SizedBox(height: 63),
                         _signInButton(),
-                        // const SizedBox(height: 63),
-                        // SizedBox(
-                        //   width: _bannerAd.size.width.toDouble(),
-                        //   height: _bannerAd.size.height.toDouble(),
-                        //   child: AdWidget(ad: _bannerAd),
-                        // ),
+                        const SizedBox(height: 63),
+                        SizedBox(
+                          width: _bannerAd.size.width.toDouble(),
+                          height: _bannerAd.size.height.toDouble(),
+                          child: AdWidget(ad: _bannerAd),
+                        ),
                       ],
                     ),
 

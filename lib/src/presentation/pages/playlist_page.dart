@@ -1,9 +1,10 @@
 import 'dart:math';
-
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:jplayer/resources/j_player_icons.dart';
 import 'package:jplayer/src/config/routes.dart';
 import 'package:jplayer/src/data/dto/item/item_dto.dart';
@@ -22,14 +23,44 @@ import 'package:jplayer/src/providers/player_provider.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 
 class PlaylistPage extends ConsumerStatefulWidget {
-  const PlaylistPage({required this.playlist, super.key});
+  PlaylistPage({required this.playlist, super.key, this.adSize = AdSize.banner});
   final ItemDTO playlist;
+  final AdSize adSize;
+
+  /// The AdMob ad unit to show.
+  ///
+  /// TODO: replace this test ad unit with your own ad unit
+  final String adUnitId = Platform.isAndroid
+  // Use this ad unit on Android...
+      ? 'ca-app-pub-6028156998044233/1200979251'
+  // ... or this one on iOS.
+      : 'ca-app-pub-3940256099942544/2934735716';
+
+
 
   @override
   ConsumerState<PlaylistPage> createState() => _PlaylistPageState();
 }
 
 class _PlaylistPageState extends ConsumerState<PlaylistPage> {
+
+  InterstitialAd? _interstitialAd;
+
+  // TODO: replace this test ad unit with your own ad unit.
+  final adUnitId2 = Platform.isAndroid
+      ? 'ca-app-pub-6028156998044233/9551876442'
+      : 'ca-app-pub-6028156998044233/9551876442';
+
+
+  /// The banner ad to show. This is `null` until the ad is actually loaded.
+  late BannerAd _bannerAd;
+
+  // TODO: replace this test ad unit with your own ad unit.
+  final adUnitId = Platform.isAndroid
+      ? 'ca-app-pub-6028156998044233/6135375615'
+      : 'ca-app-pub-6028156998044233/6135375615';
+
+
   final _scrollController = ScrollController();
   final _titleOpacity = ValueNotifier<double>(0);
   late ValueNotifier<MediaItem?> _currentSong;
@@ -81,7 +112,11 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
       }
     });
     _scrollController.addListener(_onScroll);
+    _loadAd();
+    loadAd();
+    _interstitialAd?.show();
   }
+
 
   void _getSongs() {
     ref
@@ -163,6 +198,12 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                   height: 254,
                                 ),
                                 const SizedBox(width: 38),
+                                // const SizedBox(height: 63),
+                                // SizedBox(
+                                //   width: _bannerAd.size.width.toDouble(),
+                                //   height: _bannerAd.size.height.toDouble(),
+                                //   child: AdWidget(ad: _bannerAd),
+                                // ),
                                 Expanded(child: _albumPanel()),
                               ],
                             ),
@@ -201,8 +242,6 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                             return PlayerSongView(
                               song: song,
                               isPlaying: item != null && song.id == item.id,
-                              downloadProgress:
-                              null, // index == 2 ? 0.8 : null,
                               onTap: (song) => ref
                                   .read(playbackProvider.notifier)
                                   .play(song, songs, widget.playlist),
@@ -235,7 +274,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                     } else {
                                       await api.removePlaylistItem(
                                           playlistId: widget.playlist.id,
-                                          entryIds: song.playlistItemId!);
+                                          entryIds: song.playlistItemId!,);
                                       const snackBar = SnackBar(
                                         backgroundColor: Colors.black87,
                                         content: Text(
@@ -320,12 +359,64 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
     );
   }
 
+  /// Loads a banner ad.
+  void _loadAd() {
+    final bannerAd = BannerAd(
+      size: widget.adSize,
+      adUnitId: widget.adUnitId,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        // Called when an ad is successfully received.
+        onAdLoaded: (ad) {
+          if (!mounted) {
+            ad.dispose();
+            return;
+          }
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        // Called when an ad request failed.
+        onAdFailedToLoad: (ad, error) {
+          debugPrint('BannerAd failed to load: $error');
+          ad.dispose();
+        },
+      ),
+    );
+
+    // Start loading.
+    bannerAd.load();
+  }
+
+  /// Loads a interstitial ad.
+  void loadAd() {
+    InterstitialAd.load(
+      adUnitId: adUnitId2,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        // Called when an ad is successfully received.
+        onAdLoaded: (ad) {
+          debugPrint('$ad loaded.');
+          // Keep a reference to the ad so you can show it later.
+          _interstitialAd = ad;
+        },
+        // Called when an ad request failed.
+        onAdFailedToLoad: (LoadAdError error) {
+          debugPrint('InterstitialAd failed to load: $error');
+        },
+      ),);
+  }
+
+
+
   @override
   void dispose() {
     super.dispose();
     _scrollController.dispose();
     _titleOpacity.dispose();
     _currentSong.dispose();
+    _bannerAd.dispose();
+    _interstitialAd?.dispose();
   }
 
   Widget _albumPanelMobile() => IconTheme(
@@ -348,6 +439,12 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
               ),
             ),
           ],
+        ),
+        const SizedBox(height: 63),
+        SizedBox(
+          width: _bannerAd.size.width.toDouble(),
+          height: _bannerAd.size.height.toDouble(),
+          child: AdWidget(ad: _bannerAd),
         ),
         Text(widget.playlist.albumArtist ?? ''),
         Row(
@@ -373,7 +470,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                 // const RandomQueueButton(),
                 SizedBox.square(
                   dimension: _device.isMobile ? 38 : 48,
-                  // child: _playAlbumButton(),
+                  child: _playAlbumButton(),
                 ),
               ],
             ),
@@ -459,7 +556,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
               const RandomQueueButton(),
               SizedBox.square(
                 dimension: _device.isMobile ? 40 : 48,
-                // child: _playAlbumButton(),
+                child: _playAlbumButton(),
               ),
             ],
           ),
@@ -468,7 +565,9 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
   );
 
   Widget _playAlbumButton() => PlayButton(
-    onPressed: () {},
+    onPressed: () {
+      _interstitialAd?.show();
+    },
   );
 
   Widget _downloadAlbumButton() => IconButton(

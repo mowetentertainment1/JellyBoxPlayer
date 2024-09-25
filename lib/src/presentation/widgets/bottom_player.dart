@@ -86,15 +86,8 @@ class _BottomPlayerState extends ConsumerState<BottomPlayer> with SingleTickerPr
                           data: _theme.iconTheme.copyWith(
                             size: _isMobile ? 28 : 24,
                           ),
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              // _openListButton(),
-                              // _randomQueueButton(),
-                              // _repeatTrackButton(),
-                              // _downloadTrackButton(),
-                              // _likeTrackButton(),
-                            ],
                           ),
                         ),
                       ],
@@ -161,7 +154,7 @@ class _BottomPlayerState extends ConsumerState<BottomPlayer> with SingleTickerPr
             enableDrag: false,
             showDragHandle: true,
             dragHandleSize: const Size(113, 10),
-            backgroundColor: colorScheme?.background,
+            backgroundColor: colorScheme?.surface,
             constraints: BoxConstraints(
               maxHeight: constraints.maxHeight * 0.92,
               minWidth: constraints.maxWidth,

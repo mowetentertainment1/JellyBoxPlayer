@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:jplayer/resources/j_player_icons.dart';
 import 'package:jplayer/src/data/dto/item/item_dto.dart';
 import 'package:jplayer/src/data/dto/songs/songs_dto.dart';
@@ -19,15 +21,46 @@ import 'package:jplayer/src/providers/color_scheme_provider.dart';
 import 'package:jplayer/src/providers/player_provider.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 
+
 class AlbumPage extends ConsumerStatefulWidget {
-  const AlbumPage({required this.album, super.key});
+  AlbumPage({required this.album, super.key, this.adSize = AdSize.banner});
   final ItemDTO album;
+
+  final AdSize adSize;
+
+  /// The AdMob ad unit to show.
+  ///
+  /// TODO: replace this test ad unit with your own ad unit
+  final String adUnitId = Platform.isAndroid
+  // Use this ad unit on Android...
+      ? 'ca-app-pub-6028156998044233/1200979251'
+  // ... or this one on iOS.
+      : 'ca-app-pub-3940256099942544/2934735716';
+
+
+
 
   @override
   ConsumerState<AlbumPage> createState() => _AlbumPageState();
 }
 
 class _AlbumPageState extends ConsumerState<AlbumPage> {
+  InterstitialAd? _interstitialAd;
+
+  // TODO: replace this test ad unit with your own ad unit.
+  final adUnitId2 = Platform.isAndroid
+      ? 'ca-app-pub-6028156998044233/9551876442'
+      : 'ca-app-pub-6028156998044233/9551876442';
+
+
+  /// The banner ad to show. This is `null` until the ad is actually loaded.
+  late BannerAd _bannerAd;
+
+  // TODO: replace this test ad unit with your own ad unit.
+  final adUnitId = Platform.isAndroid
+      ? 'ca-app-pub-6028156998044233/6135375615'
+      : 'ca-app-pub-6028156998044233/6135375615';
+
   final _scrollController = ScrollController();
   final _titleOpacity = ValueNotifier<double>(0);
   late ValueNotifier<MediaItem?> _currentSong;
@@ -61,7 +94,7 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
           clipBehavior: Clip.antiAlias,
           builder: (context) => _availablePlaylistsList(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-          ));
+          ),);
     }
 
     if (playlist != null) {
@@ -80,6 +113,7 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
       _getSongs();
       if (mounted) ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
+    await _interstitialAd?.show();
   }
 
   void _onScroll() {
@@ -119,6 +153,9 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
       }
     });
     _scrollController.addListener(_onScroll);
+    _loadAd();
+    loadAd();
+    _interstitialAd?.show();
   }
 
   void _getSongs() {
@@ -235,7 +272,6 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
                             return PlayerSongView(
                               song: song,
                               isPlaying: item != null && song.id == item.id,
-                              downloadProgress: null, // index == 2 ? 0.8 : null,
                               onTap: (song) => ref.read(playbackProvider.notifier).play(song, songs, widget.album),
                               position: index + 1,
                               onLikePressed: (song) async {
@@ -246,6 +282,7 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
                                   itemId: song.id,
                                 );
                                 _getSongs();
+                                await _interstitialAd?.show();
                               },
                               optionsBuilder: (context) => [
                                 PopupMenuItem(
@@ -269,12 +306,62 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
     );
   }
 
+  /// Loads a banner ad.
+  void _loadAd() {
+    final bannerAd = BannerAd(
+      size: widget.adSize,
+      adUnitId: widget.adUnitId,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        // Called when an ad is successfully received.
+        onAdLoaded: (ad) {
+          if (!mounted) {
+            ad.dispose();
+            return;
+          }
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        // Called when an ad request failed.
+        onAdFailedToLoad: (ad, error) {
+          debugPrint('BannerAd failed to load: $error');
+          ad.dispose();
+        },
+      ),
+    );
+
+    // Start loading.
+    bannerAd.load();
+  }
+
+  /// Loads a interstitial ad.
+  void loadAd() {
+    InterstitialAd.load(
+      adUnitId: adUnitId2,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        // Called when an ad is successfully received.
+        onAdLoaded: (ad) {
+          debugPrint('$ad loaded.');
+          // Keep a reference to the ad so you can show it later.
+          _interstitialAd = ad;
+        },
+        // Called when an ad request failed.
+        onAdFailedToLoad: (LoadAdError error) {
+          debugPrint('InterstitialAd failed to load: $error');
+        },
+      ),);
+  }
+
   @override
   void dispose() {
     super.dispose();
     _scrollController.dispose();
     _titleOpacity.dispose();
     _currentSong.dispose();
+    _bannerAd.dispose();
+    _interstitialAd?.dispose();
   }
 
   Widget _albumPanelMobile() => IconTheme(
@@ -283,6 +370,12 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        SizedBox(
+          width: _bannerAd.size.width.toDouble(),
+          height: _bannerAd.size.height.toDouble(),
+          child: AdWidget(ad: _bannerAd),
+        ),
+        const SizedBox(height: 18),
         Row(
           children: [
             Flexible(
@@ -315,16 +408,8 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
                 ),
               ),
             ),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                // _downloadAlbumButton(),
-                // const RandomQueueButton(),
-                // SizedBox.square(
-                //   dimension: _device.isMobile ? 38 : 48,
-                //   child: _playAlbumButton(),
-                // ),
-              ],
             ),
           ],
         ),
@@ -344,6 +429,7 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
             children: [
               Row(
                 children: [
+                  const SizedBox(height: 63),
                   Flexible(
                     child: Text(
                       widget.album.name,
@@ -405,19 +491,21 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
             children: [
               _downloadAlbumButton(),
               const RandomQueueButton(),
-              // SizedBox.square(
-              //   dimension: _device.isMobile ? 40 : 48,
-              //   child: _playAlbumButton(),
-              // ),
+              SizedBox.square(
+                dimension: _device.isMobile ? 40 : 48,
+                child: _playAlbumButton(),
+              ),
             ],
           ),
       ],
     ),
   );
 
-  // Widget _playAlbumButton() => PlayButton(
-  //   onPressed: () {},
-  // );
+  Widget _playAlbumButton() => PlayButton(
+    onPressed: () {
+      _interstitialAd?.show();
+    },
+  );
 
   Widget _downloadAlbumButton() => IconButton(
     onPressed: () {},
@@ -509,6 +597,7 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
                       IconButton(
                         icon: const Icon(Icons.close),
                         onPressed: () {
+                          _interstitialAd?.show();
                           Navigator.pop(context);
                         },
                       ),
@@ -547,11 +636,12 @@ class _AlbumPageState extends ConsumerState<AlbumPage> {
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                           ),
                           onPressed: () {
+                            _interstitialAd?.show();
                             if (formKey.currentState!.validate()) {
                               formKey.currentState!.save();
                             }
                           },
-                          child: const Text("Add to playlist"),
+                          child: const Text('Add to playlist'),
                         ),
                       ],
                     ),

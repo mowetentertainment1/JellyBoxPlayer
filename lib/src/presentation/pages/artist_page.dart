@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:jplayer/src/config/routes.dart';
 import 'package:jplayer/src/data/dto/item/item_dto.dart';
 import 'package:jplayer/src/data/providers/providers.dart';
@@ -13,14 +15,44 @@ import 'package:jplayer/src/providers/base_url_provider.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class ArtistPage extends ConsumerStatefulWidget {
-  const ArtistPage({required this.artist, super.key});
+  ArtistPage({required this.artist, super.key, this.adSize = AdSize.banner});
   final ItemDTO artist;
+
+  final AdSize adSize;
+
+  /// The AdMob ad unit to show.
+  ///
+  /// TODO: replace this test ad unit with your own ad unit
+  final String adUnitId = Platform.isAndroid
+  // Use this ad unit on Android...
+      ? 'ca-app-pub-6028156998044233/1200979251'
+  // ... or this one on iOS.
+      : 'ca-app-pub-3940256099942544/2934735716';
+
+
 
   @override
   ConsumerState<ArtistPage> createState() => _ArtistPageState();
 }
 
 class _ArtistPageState extends ConsumerState<ArtistPage> {
+  InterstitialAd? _interstitialAd;
+
+  // TODO: replace this test ad unit with your own ad unit.
+  final adUnitId2 = Platform.isAndroid
+      ? 'ca-app-pub-6028156998044233/9551876442'
+      : 'ca-app-pub-6028156998044233/9551876442';
+
+
+  /// The banner ad to show. This is `null` until the ad is actually loaded.
+  late BannerAd _bannerAd;
+
+  // TODO: replace this test ad unit with your own ad unit.
+  final adUnitId = Platform.isAndroid
+      ? 'ca-app-pub-6028156998044233/6135375615'
+      : 'ca-app-pub-6028156998044233/6135375615';
+
+
   final _scrollController = ScrollController();
   final _titleOpacity = ValueNotifier<double>(0);
   final _titleKey = GlobalKey(debugLabel: 'title');
@@ -55,6 +87,9 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
     _getAlbums();
     _getAppearsOn();
     _scrollController.addListener(_onScroll);
+    _loadAd();
+    loadAd();
+    _interstitialAd?.show();
   }
 
   Future<void> _getAppearsOn() async {
@@ -144,6 +179,11 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                               ),
                               child: Column(
                                 children: [
+                                  // SizedBox(
+                                  //   width: _bannerAd.size.width.toDouble(),
+                                  //   height: _bannerAd.size.height.toDouble(),
+                                  //   child: AdWidget(ad: _bannerAd),
+                                  // ),
                                   Row(
                                     mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -154,10 +194,10 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                                           widget.artist.name,
                                           style: const TextStyle(
                                               fontSize: 18,
-                                              fontWeight: FontWeight.w700),
+                                              fontWeight: FontWeight.w700,),
                                         ),
                                       ),
-                                      // _playButton(),
+                                      _playButton(),
                                     ],
                                   ),
                                   DefaultTextStyle(
@@ -169,6 +209,12 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                             ),
                           ),
                         ],
+                      ),
+                      const SizedBox(height: 18,),
+                      SizedBox(
+                        width: _bannerAd.size.width.toDouble(),
+                        height: _bannerAd.size.height.toDouble(),
+                        child: AdWidget(ad: _bannerAd),
                       ),
                     ],
                   ),
@@ -242,7 +288,7 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
-                                    // _playButton(),
+                                    _playButton(),
                                   ],
                                 ),
                                 DefaultTextStyle(
@@ -261,7 +307,12 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
                             ),
                           ),
                         ),
-                      )
+                      ),
+                      SizedBox(
+                        width: _bannerAd.size.width.toDouble(),
+                        height: _bannerAd.size.height.toDouble(),
+                        child: AdWidget(ad: _bannerAd),
+                      ),
                     ],
                   ),
                 ],
@@ -273,9 +324,60 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
     );
   }
 
+
+  /// Loads a banner ad.
+  void _loadAd() {
+    final bannerAd = BannerAd(
+      size: widget.adSize,
+      adUnitId: widget.adUnitId,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        // Called when an ad is successfully received.
+        onAdLoaded: (ad) {
+          if (!mounted) {
+            ad.dispose();
+            return;
+          }
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        // Called when an ad request failed.
+        onAdFailedToLoad: (ad, error) {
+          debugPrint('BannerAd failed to load: $error');
+          ad.dispose();
+        },
+      ),
+    );
+
+    // Start loading.
+    bannerAd.load();
+  }
+
+  /// Loads a interstitial ad.
+  void loadAd() {
+    InterstitialAd.load(
+      adUnitId: adUnitId2,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        // Called when an ad is successfully received.
+        onAdLoaded: (ad) {
+          debugPrint('$ad loaded.');
+          // Keep a reference to the ad so you can show it later.
+          _interstitialAd = ad;
+        },
+        // Called when an ad request failed.
+        onAdFailedToLoad: (LoadAdError error) {
+          debugPrint('InterstitialAd failed to load: $error');
+        },
+      ),);
+  }
+
   @override
   void dispose() {
     _scrollController.dispose();
+    _bannerAd.dispose();
+    _interstitialAd?.dispose();
     super.dispose();
   }
 
@@ -324,10 +426,12 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
     ),
   );
 
-  // Widget _playButton() => SizedBox(
-  //   height: 48,
-  //   child: PlayButton(onPressed: () {}),
-  // );
+  Widget _playButton() => SizedBox(
+    height: 48,
+    child: PlayButton(onPressed: () {
+      _interstitialAd?.show();
+    },),
+  );
 
   List<Widget> _albumsWidgets() {
     return [
@@ -363,6 +467,7 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
               showArtist: false,
               album: _albums[index],
               onTap: (album) {
+                _interstitialAd?.show();
                 final location = GoRouterState.of(context).fullPath;
                 context.go(
                   '$location${Routes.album}',
@@ -405,6 +510,7 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
             showArtist: false,
             album: _appearsOn[index],
             onTap: (album) {
+              _interstitialAd?.show();
               final location = GoRouterState.of(context).fullPath;
               context.go(
                 '$location${Routes.album}',
@@ -445,7 +551,7 @@ class _ArtistPageState extends ConsumerState<ArtistPage> {
             ),
           ),
         ),
-        ..._albumsWidgets()
+        ..._albumsWidgets(),
       ],
     ),
   );
